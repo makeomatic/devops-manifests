@@ -1,0 +1,34 @@
+{{ readFile "../repositories.yaml" }}
+---
+{{ readFile "../defaults.yaml" }}
+---
+releases:
+
+- name: concourse-ci
+  namespace: default
+  chart: stable/concourse
+  version: 5.x
+  values:
+  - values/concourse.yml
+
+- name: keel
+  namespace: default
+  chart: keel/keel
+  version: 0.x
+  values:
+  - values/keel.yml
+  set:
+  - name: image.tag
+    value: "0.13.1"
+  - name: gcr.projectId
+    value: peak-orbit-214114
+
+- name: chatbot
+  namespace: default
+  chart: makeomatic/bishop
+  version: 1.x
+  values:
+  - values/chatbot.yml
+  set:
+  - name: image.tag
+    value: "0.0.1"

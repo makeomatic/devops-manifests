@@ -1,0 +1,23 @@
+# helm upgrade certmanager stable/cert-manager --install --namespace default -f certmanager.yml
+ingressShim:
+  defaultIssuerName: letsencrypt
+  defaultIssuerKind: ClusterIssuer
+
+webhook:
+  enabled: false
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+keel:
+  policy: minor
+  trigger: poll
+  pollSchedule: "@hourly"
+  images:
+    - repository: image.repository
+      tag: image.tag

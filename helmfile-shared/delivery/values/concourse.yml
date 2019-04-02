@@ -1,0 +1,60 @@
+fullnameOverride: concourse-ci
+
+concourse:
+  web:
+    # externalUrl: https://concourse.internal.streamlayer.io
+    auth:
+      mainTeam:
+        localUser: admin
+    # postgres:
+    #   host: sql-proxy.default.svc.cluster.local
+    #   database: concourse-ci
+    kubernetes:
+      namespacePrefix: concourse-
+      teams:
+        - main
+      keepNamespaces: true
+      createTeamNamespaces: false
+    prometheus:
+      enabled: true
+
+web:
+  replicas: 2
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - concourse.internal.streamlayer.io
+    tls:
+      - secretName: concourse-internal-tls
+        hosts:
+          - concourse.internal.streamlayer.io
+
+# secrets:
+#   create: true
+#   # htpasswd -nbB -C10 admin admin
+#   localUsers: "admin:$2y$10$PzjPEpnNTTgzVZ5gfVs89.ZX5VVayZEtnY6VfccVhvt8s.EghhpQy"
+#   postgresUser: concourse
+#   postgresPassword: password
+
+worker:
+  replicas: 2
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1024Mi"
+
+postgresql:
+  enabled: false
+
+keel:
+  policy: major
+  trigger: poll
+  pollSchedule: "@hourly"
+  images:
+    - repository: image
+      tag: imageTag

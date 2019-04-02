@@ -1,0 +1,75 @@
+# kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+fullnameOverride: grafana
+adminUser: admin
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: prometheus-istio
+      type: prometheus
+      orgId: 1
+      url: http://prometheus.istio-system:9090
+      access: proxy
+      isDefault: true
+      jsonData:
+        timeInterval: 5s
+      editable: true
+    - name: prometheus-monitoring
+      type: prometheus
+      orgId: 1
+      url: http://prometheus-prometheus.monitorings:9090
+      access: proxy
+      editable: true
+
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+    - name: 'istio'
+      orgId: 1
+      folder: 'istio'
+      type: file
+      disableDeletion: false
+      options:
+        path: /var/lib/grafana/dashboards/istio
+    - name: kubernetes
+      orgId: 1
+      folder: 'kubernetes'
+      type: file
+      disableDeletion: false
+      editable: true
+      updateIntervalSeconds: 10
+      options:
+        path: /var/lib/grafana/dashboards/kubernetes
+
+# TODO: load istio dashboards
+# https://grafana.com/orgs/istio/dashboards
+dashboards:
+  # istio:
+  #   galley:
+  #     url: https://grafana.com/api/dashboards/7648/revisions/1/download
+  kubernetes:
+    kube-eagle:
+      url: https://grafana.com/api/dashboards/9871/revisions/2/download
+
+persistence:
+  enabled: true
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+keel:
+  policy: major
+  trigger: poll
+  pollSchedule: "@hourly"
+  approvals: 1
+  approvalDeadline: 240
+  images:
+    - repository: image.repository
+      tag: image.tag

@@ -1,0 +1,25 @@
+# helm upgrade karma stable/karma --install --namespace monitoring -f karma.yml
+fullnameOverride: karma
+
+image:
+  tag: latest
+
+env:
+- name: ALERTMANAGER_URI
+  value: http://prometheus-alertmanager:9093
+
+resources:
+  limits:
+    cpu: 10m
+    memory: 64Mi
+  requests:
+    cpu: 10m
+    memory: 64Mi
+
+keel:
+  policy: all
+  trigger: poll
+  pollSchedule: "@hourly"
+  images:
+    - repository: image.repository
+      tag: image.tag

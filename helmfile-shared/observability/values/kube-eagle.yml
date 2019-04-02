@@ -1,0 +1,18 @@
+serviceMonitor:
+  create: true
+
+keel:
+  policy: major
+  trigger: poll
+  pollSchedule: "@hourly"
+  images:
+    - repository: image.repository
+      tag: image.tag
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi

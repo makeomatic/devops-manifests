@@ -1,0 +1,18 @@
+openvpn:
+  redirectGateway: false
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+keel:
+  policy: all
+  trigger: poll
+  pollSchedule: "@daily"
+  images:
+    - repository: image.repository
+      tag: image.tag

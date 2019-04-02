@@ -1,0 +1,29 @@
+# https://github.com/keel-hq/keel/blob/master/chart/keel/values.yaml
+polling:
+  enabled: true
+
+helmProvider:
+  enabled: true
+
+gcr:
+  enabled: true
+  # projectId: peak-orbit-214114
+  pubSub:
+    enabled: true
+
+# googleApplicationCredentials: ""
+
+webhook:
+  enabled: true
+  endpoint: http://chatbot.default.svc.cluster.local:8080/keel/deployment
+
+keel:
+  pollSchedule: "@every 1h"
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi

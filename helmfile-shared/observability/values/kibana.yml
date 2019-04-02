@@ -1,0 +1,17 @@
+# helm upgrade kibana stable/kibana --install -f kibana.yml --namespace monitoring
+# k create configmap kibana-logtrail --from-file=logtrail.json
+files:
+  kibana.yml:
+    elasticsearch.url: http://elasticsearch-client:9200
+
+# plugins:
+#   enabled: true
+#   reset: true
+#   values:
+#     - logtrail,0.1.31,https://github.com/sivasamyk/logtrail/releases/download/v0.1.31/logtrail-6.6.0-0.1.31.zip
+
+# extraConfigMapMounts:
+#   - name: logtrail-configs
+#     configMap: kibana-logtrail
+#     mountPath: /usr/share/kibana/plugins/logtrail/logtrail.json
+#     subPath: logtrail.json

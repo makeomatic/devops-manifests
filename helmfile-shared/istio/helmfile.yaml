@@ -1,0 +1,12 @@
+{{ readFile "../repositories.yaml" }}
+---
+{{ readFile "../defaults.yaml" }}
+---
+releases:
+
+- name: istio
+  namespace: istio-system
+  chart: makeomatic/istio
+  version: 1.1.0
+  values:
+  - values/istio.yml

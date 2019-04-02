@@ -1,0 +1,105 @@
+global:
+  # Istio control plane namespace: This specifies where the Istio control
+  # plane was installed earlier.  Modify this if you installed the control
+  # plane in a different namespace than istio-system.
+  istioNamespace: istio-system
+
+  # open 443 port on ingress
+  k8sIngressHttps: true
+  # allow traffic if client is unable to connect to the mixer
+  disablePolicyChecks: true
+  # allows traffic in cases when the mixer policy service cannot be reached.
+  policyCheckFailOpen: true
+  proxy:
+    # istio-init will be able to change iptables in non-root containers
+    # also securityContext.runAsUser: 0 should be set on target container
+    privileged: true
+  # outbound traffic to unknown destinations will be allowed by default
+  outboundTrafficPolicy:
+    mode: ALLOW_ANY # ALLOW_ANY, REGISTRY_ONLY
+
+# specify exact load balancer ip on install / upgrade
+gateways:
+  enabled: true
+
+  istio-ingressgateway:
+    enabled: true
+    loadBalancerIP: "35.222.37.140"
+
+  # setup additional gateway with own certificates
+  # internal-ingressgateway:
+  #   enabled: true
+  #   namespace: default
+  #   loadBalancerIP: "35.192.150.150"
+  #   labels:
+  #     app: internal-gateway
+  #   replicaCount: 1
+  #   cpu:
+  #     targetAverageUtilization: 80
+  #   loadBalancerIP: ""
+  #   resources: {}
+  #   type: LoadBalancer
+  #   ports:
+  #   - port: 80
+  #     targetPort: 80
+  #     name: http2
+  #   - port: 443
+  #     name: https
+  #   - port: 15011
+  #     targetPort: 15011
+  #     name: tcp-pilot-grpc-tls
+  #   - port: 8060
+  #     targetPort: 8060
+  #     name: tcp-citadel-grpc-tls
+  #   # Addon ports for kiali are enabled in gateway - but will only redirect if
+  #   # the gateway configuration for the various components are enabled.
+  #   - port: 15029
+  #     targetPort: 15029
+  #     name: http2-kiali
+  #   # Telemetry-related ports are enabled in gateway - but will only redirect if
+  #   # the gateway configuration for the various components are enabled.
+  #   - port: 15030
+  #     targetPort: 15030
+  #     name: http2-prometheus
+  #   - port: 15031
+  #     targetPort: 15031
+  #     name: http2-grafana
+  #   - port: 15032
+  #     targetPort: 15032
+  #     name: http2-tracing
+  #   secretVolumes:
+  #   - name: ingressgateway-certs
+  #     secretName: internal-wild
+  #     mountPath: /etc/istio/ingressgateway-certs
+
+# do not reject requests if mixer is overloaded
+# enable stdio debugger for staging environment
+mixer:
+  loadshedding:
+    mode: logonly
+  adapers:
+    stdio:
+      enabled: true
+
+# trace all requests in staging
+pilot:
+  traceSampling: 100.0
+
+# enable grafana dashboards
+grafana:
+  enabled: true
+
+# enable jaeger tracer
+tracing:
+  enabled: true
+
+# enable kiali addon
+kiali:
+  enabled: true
+  createDemoSecret: true
+  dashboard:
+    secretName: kiali
+    usernameKey: username
+    passphraseKey: passphrase
+    grafanaURL: http://grafana.monitoring:3000
+    jaegerURL: http://jaeger-query:16686
