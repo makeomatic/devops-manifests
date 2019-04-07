@@ -1,4 +1,0 @@
-helmDefaults:
-  wait: true
-  force: true
-  atomic: true
