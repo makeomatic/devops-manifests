@@ -1,0 +1,9 @@
+fullnameOverride: consul
+
+# no need to run consul dns as we do not use them
+dns:
+  enabled: false
+
+# launch client on every node
+client:
+  enabled: true

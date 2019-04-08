@@ -24,7 +24,7 @@ gateways:
 
   istio-ingressgateway:
     enabled: true
-    loadBalancerIP: "35.222.37.140"
+    # loadBalancerIP: "35.222.37.140"
 
   # setup additional gateway with own certificates
   # internal-ingressgateway:

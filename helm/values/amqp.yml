@@ -1,0 +1,45 @@
+fullnameOverride: amqp
+replicaCount: 3
+rabbitmqUsername: guest
+# rabbitmqPassword: xxx
+# rabbitmqErlangCookie: xxx
+
+terminationGracePeriodSeconds: 1
+
+rabbitmqMemoryHighWatermark: 1024MB
+
+definitions:
+  policies: |-
+    {
+      "name": "ha-all",
+      "pattern": ".*",
+      "vhost": "/",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic",
+        "ha-sync-batch-size": 1
+      }
+    }
+
+# persistentVolume:
+#   enabled: true
+
+# NOTE: we enable exporter but do implement custom servicemonitors / prometheus rules
+prometheus:
+  exporter:
+    enabled: true
+  operator:
+    enabled: false
+    alerts:
+      enabled: false
+
+# https://keel.sh/
+keel:
+  policy: major
+  trigger: poll
+  pollSchedule: "@hourly"
+  approvals: 1
+  approvalDeadline: 240
+  images:
+    - repository: image.repository
+      tag: image.tag

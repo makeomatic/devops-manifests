@@ -1,16 +1,14 @@
 {
-  prometheus: {
+  'prometheus': {
     namespace: 'monitoring',
     chart: 'stable/prometheus-operator',
-    version: '5.x',
-    values: ['values/prometheus.yml'],
+    version: '5.x'
   },
 
-  karma: {
+  'karma': {
     namespace: 'test',
     chart: 'stable/karma',
-    version: '1.x',
-    values: ['values/karma.yml'],
+    version: '1.x'
   },
 
   'elasticsearch-monitoring': {
@@ -19,89 +17,110 @@
     version: '1.x'
   },
 
-  'fluent-bit': {
+  'fluentbit': {
     namespace: 'monitoring',
     chart: 'stable/fluent-bit',
-    version: '1.x',
-    values: ['values/fluent-bit.yml']
+    version: '1.x'
   },
 
-  kibana: {
+  'kibana': {
     namespace: 'monitoring',
     chart: 'stable/kibana',
-    version: '2.x',
-    values: ['values/kibana.yml']
+    version: '2.x'
   },
 
   'kube-eagle': {
     namespace: 'monitoring',
     chart: 'kube-eagle/kube-eagle',
-    version: '1.x',
-    values: ['values/kube-eagle.yml']
+    version: '1.x'
   },
 
   'elasticsearch-curator': {
     namespace: 'monitoring',
     chart: 'stable/elasticsearch-curator',
-    version: '1.x',
-    values: ['values/elasticsearch-curator.yml']
+    version: '1.x'
   },
 
   'grafana': {
     namespace: 'monitoring',
     chart: 'stable/grafana',
-    version: '3.x',
-    values: ['values/grafana.yml']
+    version: '3.x'
   },
 
   'istio': {
     namespace: 'istio-system',
     chart: 'makeomatic/istio',
     version: '1.1.0',
-    values: ['values/istio.yml']
+    customizeRequred: true
   },
 
   'openvpn': {
     namespace: 'default',
     chart: 'stable/openvpn',
-    version: '3.x',
-    values: ['values/openvpn.yml']
+    version: '3.x'
   },
 
   'nginx-ingress': {
     namespace: 'default',
     chart: 'stable/nginx-ingress',
     version: '1.x',
-    values: ['values/nginx-ingress.yml']
+    customizeRequred: true
   },
 
   'cert-manager': {
     namespace: 'default',
     chart: 'stable/cert-manager',
-    version: '0.x',
-    values: ['values/cert-manager.yml']
+    version: '0.x'
   },
 
   'concourse-ci': {
     namespace: 'default',
     chart: 'stable/concourse',
     version: '5.x',
-    values: ['values/concourse.yml']
+    customizeRequred: true
   },
 
   'keel': {
     namespace: 'default',
     chart: 'keel/keel',
     version: '0.x',
-    values: ['values/keel.yml'],
     customizeRequred: true
   },
 
   'chatbot': {
     namespace: 'default',
-    chart: 'makeomatic/bishop',
+    chart: 'makeomatic/installer',
     version: '1.x',
-    values: ['values/chatbot.yml'],
     customizeRequred: true
-  }
+  },
+
+  'consul': {
+    namespace: 'default',
+    chart: 'makeomatic/consul',
+    version: '1.x'
+  },
+
+  'loki': {
+    namespace: 'default',
+    chart: 'makeomatic/loki',
+    version: '1.x'
+  },
+
+  'stolon': {
+    namespace: 'default',
+    chart: 'stable/stolon',
+    version: '1.x'
+  },
+
+  'amqp': {
+    namespace: 'default',
+    chart: 'stable/rabbitmq-ha',
+    version: '1.x'
+  },
+
+  'redis': {
+    namespace: 'default',
+    chart: 'stable/redis-ha',
+    version: '3.x'
+  },
 }

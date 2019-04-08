@@ -1,4 +1,7 @@
-local knownRepositories = import "./helm/repositories.libsonnet";
+###
+# Following template generates helmfile spec using default services / values
+# plus specifications provided by the user
+###
 local knownServices = import "./helm/services.libsonnet";
 {
   valuesPath:: error 'should specify path for default values',
@@ -13,16 +16,19 @@ local knownServices = import "./helm/services.libsonnet";
   local createRelease(serviceName) = {
     assert std.objectHas(availableServices, serviceName) : 'release "' + serviceName + '" is not found',
 
+    local hasDefaultValues = std.objectHas(knownServices, serviceName),
     local release = availableServices[serviceName],
+    local releaseName = if std.objectHas(release, 'name') then release.name else serviceName,
 
     // TODO: assert if customization is not provided
-    local customizeRequired = std.objectHas(release, 'customizeRequred'),
-    local hasCustomization = std.objectHas($.customize, serviceName),
+    // local customizeRequired = std.objectHas(release, 'customizeRequred'),
+    // local hasCustomization = std.objectHas($.customize, serviceName),
 
-    name: serviceName,
+    name: releaseName,
     namespace: release.namespace,
     chart: release.chart,
     version: release.version,
+    values: if hasDefaultValues then [$.valuesPath +'/' + serviceName + '.yml'] else [] + if std.objectHas(release, 'values') then release.values else [],
   },
 
   // local getRepository(serviceName) = {
@@ -41,7 +47,7 @@ local knownServices = import "./helm/services.libsonnet";
   // repositories: std.map(getRepository, $.services),
   repositories: [
     { name: 'stable', url: 'https://kubernetes-charts.storage.googleapis.com' },
-    { name: 'kube-eagle', url: 'https://raw.githubusercontent.com/google-cloud-tools' },
+    { name: 'kube-eagle', url: 'https://raw.githubusercontent.com/google-cloud-tools/kube-eagle-helm-chart/master' },
     { name: 'keel', url: 'https://charts.keel.sh' },
     { name: 'makeomatic', url: 'https://cdn.matic.ninja/helm-charts' },
   ],

@@ -1,6 +1,8 @@
 ###
+# Following template generates concource CI pipeline which do the following:
 # - watches for microfleet release
-# - installs corresponding image
+# - update corresponding helm release
+# - notify into telegram channel
 ###
 
 // TODO:

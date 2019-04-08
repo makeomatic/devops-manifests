@@ -1,0 +1,11 @@
+nameOverride: redis
+redis:
+  masterGroupName: master
+
+### quorum requirement: n/2+1
+podDisruptionBudget:
+  maxUnavailable: 2
+replicas: 3
+
+exporter:
+  enabled: true
