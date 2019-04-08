@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: vkfont/chatbot
-  tag: latest
+  tag: "0.0.1"
 
 service:
   type: ClusterIP

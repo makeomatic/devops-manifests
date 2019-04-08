@@ -97,13 +97,13 @@
   'consul': {
     namespace: 'default',
     chart: 'makeomatic/consul',
-    version: '1.x'
+    version: '0.x.0'
   },
 
   'loki': {
     namespace: 'default',
     chart: 'makeomatic/loki',
-    version: '1.x'
+    version: '0.x'
   },
 
   'stolon': {

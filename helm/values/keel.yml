@@ -2,6 +2,9 @@
 polling:
   enabled: true
 
+image:
+  tag: "0.13.1"
+
 helmProvider:
   enabled: true
 

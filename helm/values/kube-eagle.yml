@@ -1,6 +1,9 @@
 serviceMonitor:
   create: true
 
+image:
+  tag: "v1.1.1"
+
 keel:
   policy: major
   trigger: poll

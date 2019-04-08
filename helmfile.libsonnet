@@ -28,7 +28,7 @@ local knownServices = import "./helm/services.libsonnet";
     namespace: release.namespace,
     chart: release.chart,
     version: release.version,
-    values: if hasDefaultValues then [$.valuesPath +'/' + serviceName + '.yml'] else [] + if std.objectHas(release, 'values') then release.values else [],
+    values: (if hasDefaultValues then [$.valuesPath +'/' + serviceName + '.yml'] else []) + (if std.objectHas(release, 'values') then release.values else []),
   },
 
   // local getRepository(serviceName) = {
