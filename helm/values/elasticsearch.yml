@@ -1,12 +1,12 @@
 fullnameOverride: elasticsearch
 cluster:
-  name: monitoring
+  name: elasticsearch
   config:
     cluster.routing.allocation.disk.threshold_enabled: false # avoid "FORBIDDEN/12/index read-only" error
     thread_pool.write.queue_size: 1000
 
-master:
-  storageClass: ssd
+# master:
+#   storageClass: ssd
 
 client:
   heapSize: "512m"

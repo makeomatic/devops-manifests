@@ -19,14 +19,19 @@ kubeEtcd:
   enabled: false
 kubeScheduler:
   enabled: false
+
+### do not create default rules - will load them automatically
 defaultRules:
-  rules:
-    etcd: false
-    kubeApiserver: false
-    kubeScheduler: false
+  create: false
 
 ### settings for the alert manager
 alertmanager:
+  alertmanagerSpec:
+    # >= 0.16.0 does not supported (Apr 2019):
+    # https://github.com/prymitive/karma/issues/115
+    image:
+      tag: v0.15.3
+
   config:
     global:
       resolve_timeout: 5m

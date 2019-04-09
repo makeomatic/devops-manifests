@@ -11,7 +11,7 @@
     version: '1.x'
   },
 
-  'elasticsearch-monitoring': {
+  'elasticsearch': {
     namespace: 'monitoring',
     chart: 'stable/elasticsearch',
     version: '1.x'
