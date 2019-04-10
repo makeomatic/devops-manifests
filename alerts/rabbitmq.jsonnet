@@ -2,7 +2,7 @@
   {
     name: 'RabbitMqFewNodes',
     description: 'Some RabbitMQ Cluster Nodes Are Down in Namespace {{ $labels.namespace }}',
-    expr: 'sum((rabbitmq_up) by (namespace)) < 3',
+    expr: 'sum(rabbitmq_up) by (namespace) < 3',
     wait: '5m',
     severity: 'warning',
   },

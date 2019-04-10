@@ -63,4 +63,12 @@
     severity: 'warning',
   },
 
+  {
+    name: 'PrometheusRuleEvalFailures',
+    description: '{{$labels.job}} at {{$labels.instance}} has failing rule evaluations, please check logs',
+    expr: 'increase(prometheus_rule_evaluation_failures_total[5m]) > 0',
+    wait: '',
+    severity: 'warning',
+  },
+
 ]

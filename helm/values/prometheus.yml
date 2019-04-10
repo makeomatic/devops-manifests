@@ -20,7 +20,7 @@ kubeEtcd:
 kubeScheduler:
   enabled: false
 
-### do not create default rules - will load them automatically
+### do not create default rules - will load them manually using jsonnet
 defaultRules:
   create: false
 

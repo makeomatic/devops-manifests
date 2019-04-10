@@ -2,7 +2,7 @@
 # Following template generates helmfile spec using default services / values
 # plus specifications provided by the user
 ###
-local knownServices = import "./helm/services.libsonnet";
+local knownServices = import './helm/services.libsonnet';
 {
   valuesPath:: error 'should specify path for default values',
   services:: error 'should specify array with required services',

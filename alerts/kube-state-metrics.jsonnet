@@ -1,12 +1,47 @@
 [
   {
-    name: 'TargetDown',
-    description: '{{ $value }}% of the {{ $labels.job }} targets are down',
-    expr: '100 * (count(up == 0) BY (job) / count(up) BY (job)) > 10',
-    wait: '10m',
+    record: 'job_cronjob:kube_job_status_start_time:max',
+    expr: 'label_replace(
+        label_replace(
+          max(
+            kube_job_status_start_time
+            * ON(job_name) GROUP_RIGHT()
+            kube_job_labels{label_cronjob!=""}
+          ) BY (job_name, label_cronjob)
+          == ON(label_cronjob) GROUP_LEFT()
+          max(
+            kube_job_status_start_time
+            * ON(job_name) GROUP_RIGHT()
+            kube_job_labels{label_cronjob!=""}
+          ) BY (label_cronjob),
+          "job", "$1", "job", "(.+)"),
+        "cronjob", "$1", "label_cronjob", "(.+)")'
+  },
+
+  {
+    record: 'job_cronjob:kube_job_status_failed:sum',
+    expr: 'clamp_max(
+        job_cronjob:kube_job_status_start_time:max,
+      1)
+      * ON(job) GROUP_LEFT()
+      label_replace(
+        label_replace(
+          (kube_job_status_failed != 0),
+          "job", "$1", "job", "(.+)"),
+        "cronjob", "$1", "label_cronjob", "(.+)")'
+  },
+
+  // monitors job with label 'cronjob' in it
+  {
+    name: 'CronJobStatusFailed',
+    description: '{{ $labels.cronjob }} last run has failed {{ $value }} times',
+    expr: 'job_cronjob:kube_job_status_failed:sum * ON(cronjob) GROUP_RIGHT() kube_cronjob_labels > 0',
+    wait: '1m',
+    url: 'https://medium.com/@tristan_96324/prometheus-k8s-cronjob-alerts-94bee7b90511',
     severity: 'warning',
   },
 
+  // TODO: ignore jobs labeled with 'cronjob'
   {
     name: 'KubeJobFailed',
     summary: 'Handle failed jobs',
@@ -14,6 +49,14 @@
     url: 'https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubejobfailed',
     expr: 'kube_job_status_failed{job="kube-state-metrics"}  > 0',
     wait: '1h',
+    severity: 'warning',
+  },
+
+  {
+    name: 'TargetDown',
+    description: '{{ $value }}% of the {{ $labels.job }} targets are down',
+    expr: '100 * (count(up == 0) BY (job) / count(up) BY (job)) > 10',
+    wait: '10m',
     severity: 'warning',
   },
 
