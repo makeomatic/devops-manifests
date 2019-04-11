@@ -26,7 +26,7 @@
   {
     name: 'PgSlowQueries',
     description: 'PostgreSQL high number of queries per second on {{ $labels.cluster }} for database {{ $labels.datname }} with a value of {{ $value }}',
-    expr: 'avg(rate(pg_stat_activity_max_tx_duration{datname!~"template.*"}[2m])) by (datname)',
+    expr: 'avg(rate(pg_stat_activity_max_tx_duration{datname!~"template.*"}[2m])) by (datname) > 100', // just about, change in the real system
     wait: '2m',
     severity: 'warning',
   },

@@ -1,7 +1,7 @@
 local createRule(item) = {
   alert: item.name,
   annotations: {
-    descrition: item.description,
+    description: item.description,
   },
   expr: item.expr,
   'for': item.wait,
