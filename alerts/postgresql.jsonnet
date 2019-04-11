@@ -42,7 +42,7 @@
   {
     name: 'PgCacheHitRatio',
     description: 'PostgreSQL low on cache hit rate on {{ $labels.cluster }} for database {{ $labels.datname }} with a value of {{ $value }}',
-    expr: 'avg(rate(pg_stat_database_blks_hit{datname!~"template.*"}[5m]) / (rat (pg_stat_database_blks_hit{datname!~"template.*"}[5m]) + rate(pg_stat_database_blks_rea {datname!~"template.*"}[5m]))) by (datname) < 0.98',
+    expr: 'avg(rate(pg_stat_database_blks_hit{datname!~"template.*"}[5m]) / (rate (pg_stat_database_blks_hit{datname!~"template.*"}[5m]) + rate(pg_stat_database_blks_rea {datname!~"template.*"}[5m]))) by (datname) < 0.98',
     wait: '5m',
     severity: 'warning',
   },
