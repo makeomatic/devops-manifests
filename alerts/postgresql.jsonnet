@@ -17,7 +17,7 @@
 
   {
     name: 'PgHighConnectionCount',
-    description: 'Postgres total connections have been above 40% of the configured max_connections for the past 5 minutes on {{ $labels.instance }}',
+    description: 'Postgres total connections have been above 90% of the configured max_connections for the past 5 minutes on {{ $labels.instance }}',
     expr: 'sum(pg_stat_activity_count) > (pg_settings_max_connections * 0.9)',
     wait: '5m',
     severity: 'critical',
@@ -28,14 +28,6 @@
     description: 'PostgreSQL high number of queries per second on {{ $labels.cluster }} for database {{ $labels.datname }} with a value of {{ $value }}',
     expr: 'avg(rate(pg_stat_activity_max_tx_duration{datname!~"template.*"}[2m])) by (datname)',
     wait: '2m',
-    severity: 'warning',
-  },
-
-  {
-    name: '',
-    description: '',
-    expr: '',
-    wait: '',
     severity: 'warning',
   },
 
