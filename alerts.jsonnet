@@ -8,6 +8,7 @@ local rules = {
   'prometheus': import './alerts/prometheus.jsonnet',
   'rabbitmq': import './alerts/rabbitmq.jsonnet',
   'redis': import './alerts/redis.jsonnet',
+  'postgresql': import './alerts/postgresql.jsonnet',
 };
 
 local mapper(name) = template {

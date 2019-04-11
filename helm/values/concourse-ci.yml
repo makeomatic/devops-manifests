@@ -31,8 +31,8 @@ web:
         hosts:
           - concourse.internal.streamlayer.io
 
-# secrets:
-#   create: true
+secrets:
+  create: false
 #   # htpasswd -nbB -C10 admin admin
 #   localUsers: "admin:$2y$10$PzjPEpnNTTgzVZ5gfVs89.ZX5VVayZEtnY6VfccVhvt8s.EghhpQy"
 #   postgresUser: concourse

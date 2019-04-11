@@ -123,4 +123,10 @@
     chart: 'stable/redis-ha',
     version: '3.x'
   },
+
+  'postgres-exporter': {
+    namespace: 'default',
+    chart: 'stable/prometheus-postgres-exporter',
+    version: '0.x'
+  },
 }
