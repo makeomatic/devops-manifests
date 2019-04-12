@@ -3,7 +3,8 @@ local mixinRules = mixin {
   _config+:: {
     jobs: {
       Kubelet: $._config.kubeletSelector,
-    }
+    },
+    cpuThrottlingPercent: 85
   }
 }.prometheusAlerts.groups;
 
@@ -15,6 +16,7 @@ local alerts = std.flattenArrays([
   import 'alerts/prometheus.libsonnet',
   import 'alerts/rabbitmq.libsonnet',
   import 'alerts/redis.libsonnet',
+  import 'alerts/kube-eagle.libsonnet',
 ]);
 
 

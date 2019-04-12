@@ -40,16 +40,6 @@ alertmanager:
       group_wait: 30s
       group_interval: 5m
       repeat_interval: 24h
-      receiver: bowser-pager
-      # routes:
-      # - match:
-      #     alertname: DeadMansSwitch
-      #   receiver: "null"
-    receivers:
-    - name: "null"
-    - name: bowser-pager
-      opsgenie_configs:
-      - api_key: c55c936e-e13e-4a74-b8ae-79344ad825bd
 
 
 prometheus:
