@@ -1,20 +1,39 @@
-// jsonnet alerts.jsonnet -y | kubectl apply -f -
-local template = import './alerts/alert.libsonnet';
-local rules = {
-  'alertmanager': import './alerts/alertmanager.jsonnet',
-  'kube-state-metrics': import './alerts/kube-state-metrics.jsonnet',
-  'kubelet': import './alerts/kubelet.jsonnet',
-  'node-exporter': import './alerts/node-exporter.jsonnet',
-  'prometheus': import './alerts/prometheus.jsonnet',
-  'rabbitmq': import './alerts/rabbitmq.jsonnet',
-  'redis': import './alerts/redis.jsonnet',
-  'postgresql': import './alerts/postgresql.jsonnet',
+local mixin = import 'vendor/kubernetes-mixin/mixin.libsonnet';
+local mixinRules = mixin {
+  _config+:: {
+    jobs: {
+      Kubelet: $._config.kubeletSelector,
+    }
+  }
+}.prometheusAlerts.groups;
+
+local alerts = std.flattenArrays([
+  mixinRules,
+  import 'alerts/alertmanager.libsonnet',
+  import 'alerts/node-exporter.libsonnet',
+  import 'alerts/postgresql.libsonnet',
+  import 'alerts/prometheus.libsonnet',
+  import 'alerts/rabbitmq.libsonnet',
+  import 'alerts/redis.libsonnet',
+]);
+
+
+local mapper(item) = {
+  apiVersion: 'monitoring.coreos.com/v1',
+  kind: 'PrometheusRule',
+  metadata: {
+    name: item.name,
+    namespace: 'monitoring',
+    labels: {
+      app: item.name
+    },
+  },
+  spec: {
+    groups: [{
+      name: item.name,
+      rules: item.rules,
+    }],
+  },
 };
 
-local mapper(name) = template {
-  name: name,
-  rules: rules[name],
-};
-
-local alertNames = std.objectFields(rules);
-std.map(mapper, alertNames)
+std.map(mapper, alerts)
