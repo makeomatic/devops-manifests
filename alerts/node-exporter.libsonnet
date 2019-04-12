@@ -3,6 +3,21 @@
     name: 'node-exporter',
     rules: [
       {
+        alert: 'NodeMetricIsAbsent',
+        annotations: {
+          message: 'Looks like node-exporter metrics are absent - either install collector or remove corresponding alerts'
+        },
+        expr: 'absent(node_network_receive_bytes_total) or
+absent(node_disk_read_bytes_total) or
+absent(node_disk_written_bytes_total) or
+absent(node:node_filesystem_usage:) or
+absent(node:node_filesystem_avail)',
+        labels: {
+          severity: 'critical',
+        }
+      },
+
+      {
         alert: 'UnusualNetworkThroughputIn',
         annotations: {
           message: 'Host network interfaces are probably receiving too much data (> 100 MB/s) VALUE = {{ $value }} LABELS: {{ $labels }}',

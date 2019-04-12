@@ -3,6 +3,23 @@
     name: 'postgresql',
     rules: [
       {
+        alert: 'PgMetricIsAbsent',
+        annotations: {
+          message: 'Looks like postgresql-exporter metrics are absent - either install collector or remove corresponding alerts'
+        },
+        expr: 'absent(pg_exporter_last_scrape_error) or
+absent(pg_up) or
+absent(pg_stat_activity_count) or
+absent(pg_settings_max_connections) or
+absent(pg_stat_activity_max_tx_duration) or
+absent(pg_stat_database_blks_hit) or
+absent(pg_stat_database_xact_rollback)',
+        labels: {
+          severity: 'critical',
+        }
+      },
+
+      {
         alert: 'PgExporterScrapeError',
         annotations: {
           message: 'Postgres Exporter running on {{ $labels.job }} (instance: {{ $labels.instance }}) is encountering scrape errors processing queries. Error count: ( {{ $value }} )',

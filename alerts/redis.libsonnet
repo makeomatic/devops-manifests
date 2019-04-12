@@ -3,6 +3,19 @@
     name: 'redis',
     rules: [
       {
+        alert: 'RedisMetricIsAbsent',
+        annotations: {
+          message: 'Looks like redis-exporter metrics are absent - either install collector or remove corresponding alerts'
+        },
+        expr: 'absent(redis_up) or
+absent(redis_connected_clients) or
+absent(redis_rejected_connections_total)',
+        labels: {
+          severity: 'critical',
+        }
+      },
+
+      {
         alert: 'RedisDown',
         annotations: {
           message: 'Redis instance is down VALUE = {{ $value }} LABELS: {{ $labels }}',

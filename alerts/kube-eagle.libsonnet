@@ -3,6 +3,22 @@
     name: 'kube-eagle',
     rules: [
       {
+        alert: 'EagleMetricIsAbsent',
+        annotations: {
+          message: 'Looks like kube-eagle metrics are absent - either install collector or remove corresponding alerts'
+        },
+        expr: 'absent(eagle_pod_container_resource_usage_memory_bytes) or
+absent(eagle_pod_container_resource_requests_memory_bytes) or
+absent(eagle_pod_container_resource_limits_memory_bytes) or
+absent(eagle_pod_container_resource_usage_cpu_cores) or
+absent(eagle_pod_container_resource_requests_cpu_cores) or
+absent(eagle_pod_container_resource_limits_cpu_cores)',
+        labels: {
+          severity: 'critical',
+        }
+      },
+
+      {
         alert: 'EagleMemoryRequestExceed',
         annotations: {
           message: 'Pod {{$labels.namespace}}/{{$labels.exported_pod}} exceeded requested memory by {{$value}}%. It may affect resource planning',

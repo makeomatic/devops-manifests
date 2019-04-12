@@ -3,6 +3,23 @@
     name: 'rabbitmq',
     rules: [
       {
+        alert: 'RabbitMqMetricIsAbsent',
+        annotations: {
+          message: 'Looks like rabbitmq-exporter metrics are absent - either install collector or remove corresponding alerts'
+        },
+        expr: 'absent(rabbitmq_up) or
+absent(rabbitmq_node_disk_free_alarm) or
+absent(rabbitmq_node_mem_alarm) or
+absent(rabbitmq_node_mem_used) or
+absent(rabbitmq_partitions) or
+absent(rabbitmq_queue_messages_ready) or
+absent(rabbitmq_queue_consumers)',
+        labels: {
+          severity: 'critical',
+        }
+      },
+
+      {
         alert: 'RabbitMqFewNodes',
         annotations: {
           message: 'Some RabbitMQ Cluster Nodes Are Down in Namespace {{ $labels.namespace }}',
