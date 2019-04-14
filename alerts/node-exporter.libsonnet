@@ -11,7 +11,7 @@
 absent(node_disk_read_bytes_total) or
 absent(node_disk_written_bytes_total) or
 absent(node:node_filesystem_usage:) or
-absent(node:node_filesystem_avail)',
+absent(node:node_filesystem_avail:)',
         labels: {
           severity: 'critical',
         }

@@ -2,6 +2,7 @@
   {
     name: 'alertmanager',
     rules: [
+
       {
         alert: 'AlertmanagerConfigInconsistent',
         annotations: {
