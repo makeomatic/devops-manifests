@@ -25,6 +25,10 @@ gateways:
   istio-ingressgateway:
     enabled: true
     # loadBalancerIP: "35.222.37.140"
+    # https://preliminary.istio.io/docs/tasks/traffic-management/secure-ingress/sds/
+    # NOTE: it is broken (15 apr)
+    # sds:
+    #   enabled: true
 
   # setup additional gateway with own certificates
   # internal-ingressgateway:
