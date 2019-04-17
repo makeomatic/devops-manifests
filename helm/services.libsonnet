@@ -102,7 +102,7 @@
 
   'loki': {
     namespace: 'default',
-    chart: 'makeomatic/loki',
+    chart: 'loki/loki-stack',
     version: '0.x'
   },
 

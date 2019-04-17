@@ -48,8 +48,9 @@ local knownServices = import 'services.libsonnet';
   repositories: [
     { name: 'stable', url: 'https://kubernetes-charts.storage.googleapis.com' },
     { name: 'kube-eagle', url: 'https://raw.githubusercontent.com/google-cloud-tools/kube-eagle-helm-chart/master' },
-    { name: 'keel', url: 'https://charts.keel.sh' },
+    // { name: 'keel', url: 'https://charts.keel.sh' },
     { name: 'makeomatic', url: 'https://cdn.matic.ninja/helm-charts' },
+    { name: 'loki', url: 'https://grafana.github.io/loki/charts' },
   ],
   releases: std.map(createRelease, $.services),
 }
