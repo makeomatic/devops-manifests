@@ -11,3 +11,8 @@ go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
 jb update
 kubecfg update jsonnet/prometheus.jsonnet
 ```
+## Update grafana dashboards
+```
+jb update
+jsonnet -J vendor -m dashboards vendor/kubernetes-mixin/lib/dashboards.jsonnet
+```
