@@ -70,22 +70,54 @@ dashboards:
       url: https://grafana.com/api/dashboards/9871/revisions/2/download
       datasource: prometheus
   grafana:
-    apiserver: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/apiserver.json
-    controller-manager: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/controller-manager.json
-    k8s-cluster-rsrc-use: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-cluster-rsrc-use.json
-    k8s-node-rsrc-use: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-node-rsrc-use.json
-    k8s-resources-cluster: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-cluster.json
-    k8s-resources-namespace: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-namespace.json
-    k8s-resources-pod: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-pod.json
-    k8s-resources-workload: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-workload.json
-    k8s-resources-workloads-namespace: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-workloads-namespace.json
-    kubelet: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/kubelet.json
-    nodes: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/nodes.json
-    persistentvolumesusage: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/persistentvolumesusage.json
-    pods: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/pods.json
-    proxy: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/proxy.json
-    scheduler: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/scheduler.json
-    statefulset: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/statefulset.json
+    apiserver:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/apiserver.json
+      datasource: prometheus
+    controller-manager:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/controller-manager.json
+      datasource: prometheus
+    k8s-cluster-rsrc-use:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-cluster-rsrc-use.json
+      datasource: prometheus
+    k8s-node-rsrc-use:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-node-rsrc-use.json
+      datasource: prometheus
+    k8s-resources-cluster:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-cluster.json
+      datasource: prometheus
+    k8s-resources-namespace:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-namespace.json
+      datasource: prometheus
+    k8s-resources-pod:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-pod.json
+      datasource: prometheus
+    k8s-resources-workload:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-workload.json
+      datasource: prometheus
+    k8s-resources-workloads-namespace:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-workloads-namespace.json
+      datasource: prometheus
+    kubelet:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/kubelet.json
+      datasource: prometheus
+    nodes:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/nodes.json
+      datasource: prometheus
+    persistentvolumesusage:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/persistentvolumesusage.json
+      datasource: prometheus
+    pods:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/pods.json
+      datasource: prometheus
+    proxy:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/proxy.json
+      datasource: prometheus
+    scheduler:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/scheduler.json
+      datasource: prometheus
+    statefulset:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/statefulset.json
+      datasource: prometheus
   istio:
     istio-galley:
       url: https://raw.githubusercontent.com/istio/istio/master/install/kubernetes/helm/istio/charts/grafana/dashboards/galley-dashboard.json
