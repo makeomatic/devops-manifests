@@ -51,6 +51,15 @@ dashboardProviders:
       updateIntervalSeconds: 10
       options:
         path: /var/lib/grafana/dashboards/microfleet
+    - name: grafana
+      folder: grafana
+      type: file
+      disableDeletion: true
+      editable: false
+      updateIntervalSeconds: 10
+      options:
+        path: /var/lib/grafana/dashboards/grafana
+
 
 dashboards:
   microfleet:
@@ -60,6 +69,23 @@ dashboards:
     kube-eagle:
       url: https://grafana.com/api/dashboards/9871/revisions/2/download
       datasource: prometheus
+  grafana:
+    apiserver: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/apiserver.json
+    controller-manager: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/controller-manager.json
+    k8s-cluster-rsrc-use: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-cluster-rsrc-use.json
+    k8s-node-rsrc-use: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-node-rsrc-use.json
+    k8s-resources-cluster: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-cluster.json
+    k8s-resources-namespace: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-namespace.json
+    k8s-resources-pod: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-pod.json
+    k8s-resources-workload: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-workload.json
+    k8s-resources-workloads-namespace: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/k8s-resources-workloads-namespace.json
+    kubelet: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/kubelet.json
+    nodes: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/nodes.json
+    persistentvolumesusage: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/persistentvolumesusage.json
+    pods: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/pods.json
+    proxy: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/proxy.json
+    scheduler: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/scheduler.json
+    statefulset: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/statefulset.json
   istio:
     istio-galley:
       url: https://raw.githubusercontent.com/istio/istio/master/install/kubernetes/helm/istio/charts/grafana/dashboards/galley-dashboard.json
@@ -98,6 +124,6 @@ grafana.ini:
     enabled: true
     allow_sign_up: true
     scopes: user:email,read:org
-    auth_url: https://github.com/login/oauth/authorize
-    token_url: https://github.com/login/oauth/access_token
-    api_url: https://api.github.com/user
+    auth_url: https://raw.githubusercontent.com/login/oauth/authorize
+    token_url: https://raw.githubusercontent.com/login/oauth/access_token
+    api_url: https://api.raw.githubusercontent.com/user
