@@ -64,7 +64,7 @@ dashboardProviders:
 dashboards:
   microfleet:
     microfleet:
-      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/grafana/microfleet-dashboard.json
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/microfleet-dashboard.json
       datasource: prometheus
     kube-eagle:
       url: https://grafana.com/api/dashboards/9871/revisions/2/download
