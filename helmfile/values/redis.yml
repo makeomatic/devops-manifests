@@ -1,0 +1,46 @@
+fullnameOverride: redis
+
+redis:
+  masterGroupName: master
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
+sentinel:
+  quorum: 2
+  config:
+    # time after which sentinels deside to elect new master
+    down-after-milliseconds: 5000
+    # we keep failover timout 10+ second difference to avoid out-of-sync: https://github.com/antirez/redis/issues/2279
+    failover-timeout: 15000
+    # NOTE: it is important to setup proper healthcheck to avoid service failling during master election (> down-after-milliseconds)
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
+
+### quorum requirement: n/2+1
+podDisruptionBudget:
+  minAvailable: 51%
+
+replicas: 3
+
+exporter:
+  enabled: true
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
+sysctlImage:
+  enabled: true
+  mountHostSys: true
+  command:
+    - /bin/sh
+    - -c
+    - |-
+      install_packages systemd
+      sysctl -w net.core.somaxconn=10000
+      echo never > /host-sys/kernel/mm/transparent_hugepage/enabled

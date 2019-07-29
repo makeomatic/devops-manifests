@@ -1,0 +1,15 @@
+# TODO:  move secrets https://github.com/helm/charts/blob/master/stable/oauth2-proxy/templates/secret.yaml
+fullnameOverride: auth-proxy
+
+config:
+  # clientID: "xxx"
+  # clientSecret: "yyy"
+  # cookieSecret: "zzz"
+
+extraArgs:
+  provider: github
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 300Mi

@@ -1,0 +1,19 @@
+fullnameOverride: consul
+
+# no need to run consul dns as we do not use them
+dns:
+  enabled: false
+
+# launch client on every node
+client:
+  enabled: true
+  resources: |
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
+server:
+  resources: |
+    requests:
+      cpu: 10m
+      memory: 64Mi

@@ -1,3 +1,6 @@
+// Default cronjob template
+//
+
 {
   name:: error 'should specify cronjob name',
   namespace:: error 'should specify cronjob namespae',

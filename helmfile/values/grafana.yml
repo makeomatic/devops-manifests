@@ -1,0 +1,103 @@
+# kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+fullnameOverride: grafana
+
+# adminUser: admin
+# adminPassword: admin
+# admin:
+#   existingSecret: grafana-credentials
+#   userKey: admin-user
+#   passwordKey: admin-password
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: prometheus
+      type: prometheus
+      url: http://prometheus-prometheus.monitoring:9090
+      isDefault: true
+      access: proxy
+      editable: false
+    - name: prometheus-istio
+      type: prometheus
+      url: http://prometheus.istio-system:9090
+      access: proxy
+      jsonData:
+        timeInterval: 5s
+      editable: false
+    - name: loki
+      type: loki
+      url: http://loki:3100
+      access: proxy
+      editable: false
+
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+    - name: istio
+      folder: kubernetes
+      type: file
+      disableDeletion: true
+      editable: false
+      updateIntervalSeconds: 10
+      options:
+        path: /var/lib/grafana/dashboards/istio
+    - name: microfleet
+      folder: microfleet
+      type: file
+      disableDeletion: true
+      editable: false
+      updateIntervalSeconds: 10
+      options:
+        path: /var/lib/grafana/dashboards/microfleet
+
+dashboards:
+  microfleet:
+    microfleet:
+      url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/grafana/microfleet-dashboard.json
+      datasource: prometheus
+    kube-eagle:
+      url: https://grafana.com/api/dashboards/9871/revisions/2/download
+      datasource: prometheus
+  istio:
+    istio-galley:
+      url: https://raw.githubusercontent.com/istio/istio/master/install/kubernetes/helm/istio/charts/grafana/dashboards/galley-dashboard.json
+      datasource: prometheus-istio
+    istio-mesh:
+      url: https://raw.githubusercontent.com/istio/istio/master/install/kubernetes/helm/istio/charts/grafana/dashboards/istio-mesh-dashboard.json
+      datasource: prometheus-istio
+    istio-performance:
+      url: https://raw.githubusercontent.com/istio/istio/master/install/kubernetes/helm/istio/charts/grafana/dashboards/istio-performance-dashboard.json
+      datasource: prometheus-istio
+    istio-service:
+      url: https://raw.githubusercontent.com/istio/istio/master/install/kubernetes/helm/istio/charts/grafana/dashboards/istio-service-dashboard.json
+      datasource: prometheus-istio
+    istio-workload:
+      url: https://raw.githubusercontent.com/istio/istio/master/install/kubernetes/helm/istio/charts/grafana/dashboards/istio-workload-dashboard.json
+      datasource: prometheus-istio
+    istio-mixer:
+      url: https://raw.githubusercontent.com/istio/istio/master/install/kubernetes/helm/istio/charts/grafana/dashboards/mixer-dashboard.json
+      datasource: prometheus-istio
+    istio-pilot:
+      url: https://raw.githubusercontent.com/istio/istio/master/install/kubernetes/helm/istio/charts/grafana/dashboards/pilot-dashboard.json
+      datasource: prometheus-istio
+
+persistence:
+  enabled: false # avoid upgrade troubles
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 64Mi
+
+grafana.ini:
+  alerting:
+    enabled: false
+  auth.github:
+    enabled: true
+    allow_sign_up: true
+    scopes: user:email,read:org
+    auth_url: https://github.com/login/oauth/authorize
+    token_url: https://github.com/login/oauth/access_token
+    api_url: https://api.github.com/user

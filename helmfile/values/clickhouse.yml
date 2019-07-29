@@ -1,0 +1,29 @@
+fullnameOverride: clickhouse
+
+disruptionBudget:
+  minAvailable: 1
+
+replicaCount: 3
+
+storage:
+  className: ssd
+  size: 10Gi
+
+config:
+  zookeeper.xml: |
+    <yandex>
+        <zookeeper>
+            <node index="1">
+                <host>zookeeper-0.zookeeper-headless</host>
+                <port>2181</port>
+            </node>
+            <node index="2">
+                <host>zookeeper-1.zookeeper-headless</host>
+                <port>2181</port>
+            </node>
+            <node index="3">
+                <host>zookeeper-2.zookeeper-headless</host>
+                <port>2181</port>
+            </node>
+        </zookeeper>
+    </yandex>

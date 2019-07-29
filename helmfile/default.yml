@@ -1,0 +1,19 @@
+repositories:
+- name: makeomatic
+  url: https://cdn.matic.ninja/helm-charts
+- name: stable
+  url: https://kubernetes-charts.storage.googleapis.com
+- name: incubator
+  url: https://kubernetes-charts-incubator.storage.googleapis.com
+- name: jetstack
+  url: https://charts.jetstack.io
+- name: loki
+  url: https://grafana.github.io/loki/charts
+- name: kube-eagle
+  url: https://raw.githubusercontent.com/google-cloud-tools/kube-eagle-helm-chart/master
+- name: istio.io
+  url: https://storage.googleapis.com/istio-release/releases/1.2.2/charts/
+helmDefaults:
+  wait: true
+  recreatePods: false
+  force: true

@@ -1,0 +1,10 @@
+fullnameOverride: karma
+
+env:
+- name: ALERTMANAGER_URI
+  value: http://prometheus-alertmanager:9093
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi

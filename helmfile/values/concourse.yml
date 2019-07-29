@@ -1,0 +1,52 @@
+# NOTE: terraforn should create following secrets before: concourse-ci-worker, concourse-ci-web
+fullnameOverride: concourse
+
+concourse:
+  web:
+    # clusterName: cappacity-staging
+    # externalUrl: https://concourse.k8s.cappasity3d.com
+    auth:
+      mainTeam:
+        localUser: admin
+        # github:
+        #   org: CappasityInc
+      github:
+        enabled: true
+
+    # postgres:
+    #   host: sql-proxy.default.svc.cluster.local
+    #   database: concourse-ci
+    kubernetes:
+      namespacePrefix: concourse-
+      teams:
+        - main
+      keepNamespaces: true
+      createTeamNamespaces: false
+    prometheus:
+      enabled: true
+
+web:
+  ingress:
+    enabled: false
+
+secrets:
+  create: false
+#   # htpasswd -nbB -C10 admin admin
+#   localUsers: ""
+#   postgresUser: concourse
+#   postgresPassword: password
+
+worker:
+  replicas: 2
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1024Mi"
+
+postgresql:
+  enabled: true
+  postgresqlUsername: concourse
+  postgresqlPassword: concourse

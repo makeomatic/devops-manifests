@@ -1,0 +1,9 @@
+# helm upgrade magento bitnami/magento --install --namespace magento -f magento.yml
+
+magentoHost: magento.cappasity3d.com
+magentoUsername: user
+# magentoPassword: xxxx
+
+elasticsearch:
+  sysctlImage:
+    enabled: true

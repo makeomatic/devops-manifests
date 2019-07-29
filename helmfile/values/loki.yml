@@ -1,0 +1,11 @@
+loki:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
+promtail:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
