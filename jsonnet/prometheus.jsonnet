@@ -20,6 +20,7 @@ local manifests = std.flattenArrays([
   import 'rules/prometheus.libsonnet',
   import 'rules/rabbitmq.libsonnet',
   import 'rules/redis.libsonnet',
+  import 'rules/common.libsonnet',
 ]);
 
 // map all manifests to prometheus rule CRD
