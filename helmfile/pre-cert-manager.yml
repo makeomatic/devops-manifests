@@ -6,13 +6,5 @@ releases:
 - name: cert-manager-crds
   namespace: infrastructure
   chart: incubator/raw
-  version: ~0.2
   values:
-  - ../values/cert-manager-crds.yml
-
-- name: cert-manager-issuers
-  namespace: infrastructure
-  chart: incubator/raw
-  version: ~0.2
-  values:
-  - ../values/cert-manager-issuers.yml
+  - values/cert-manager-crds.yml

@@ -12,7 +12,7 @@ repositories:
 - name: kube-eagle
   url: https://raw.githubusercontent.com/google-cloud-tools/kube-eagle-helm-chart/master
 - name: istio.io
-  url: https://storage.googleapis.com/istio-release/releases/1.2.2/charts/
+  url: https://storage.googleapis.com/istio-release/releases/1.2.3/charts/
 helmDefaults:
   wait: true
   recreatePods: false

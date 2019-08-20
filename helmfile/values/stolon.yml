@@ -1,0 +1,66 @@
+fullnameOverride: sql
+
+superuserSecret:
+  name: sql-credentials
+  usernameKey: pg_su_username
+  passwordKey: pg_su_password
+
+replicationSecret:
+  name: sql-credentials
+  usernameKey: pg_repl_username
+  passwordKey: pg_repl_password
+
+
+clusterSpec:
+  automaticPgRestart: true
+
+pgParameters:
+  max_connections: "500"
+
+  checkpoint_completion_target: "0.9"
+  shared_preload_libraries: "pg_stat_statements"
+  pg_stat_statements.track: "all"
+  track_activity_query_size: "2048"
+  shared_buffers: "80MB"
+
+  # log_statement: "all"
+  # log_duration: "on"
+  # logging_collector: "on"
+  # log_min_duration_statement: "0"
+  # log_lock_waits: "yes"
+
+
+# manages postgresql instances
+keeper:
+  replicaCount: 3
+  podDisruptionBudget:
+    minAvailable: 1
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
+# discovers and monitors keepers
+sentinel:
+  replicaCount: 2
+  podDisruptionBudget:
+    minAvailable: 1
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
+# client access point
+proxy:
+  replicaCount: 2
+  podDisruptionBudget:
+    minAvailable: 1
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
+persistence:
+  enabled: true
+  storageClassName: ssd
+  size: 10Gi

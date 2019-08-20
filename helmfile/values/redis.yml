@@ -25,7 +25,7 @@ sentinel:
 podDisruptionBudget:
   minAvailable: 51%
 
-replicas: 3
+replicas: 5
 
 exporter:
   enabled: true
