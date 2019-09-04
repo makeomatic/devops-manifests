@@ -18,16 +18,14 @@
   local releaseOutputName = 'release',
 
   local kourierNotifyHook = {
-    // uri: 'http://kourier-webhook.ci.svc.cluster.local:3000/concourse-success',
+    uri: 'http://kourier-rest.ci.svc.cluster.local:8080/concourse',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     json: {
       link: '{ATC_EXTERNAL_URL}/teams/{BUILD_TEAM_NAME}/pipelines/{BUILD_PIPELINE_NAME}',
-      job: '{BUILD_JOB_NAME}',
-      team: '{BUILD_TEAM_NAME}',
-      pipeline: '{BUILD_PIPELINE_NAME}',
+      job: '{BUILD_JOB_NAME}'
     },
   },
 
@@ -63,14 +61,18 @@
       name: 'build-failure',
       type: 'webhook',
       source: kourierNotifyHook + {
-        uri: 'http://kourier-webhook.ci.svc.cluster.local:3000/concourse-failure',
+        json: kourierNotifyHook.json + {
+          result: 'failure'
+        }
       },
     },
     notifyBuildSuccess: {
       name: 'build-success',
       type: 'webhook',
       source: kourierNotifyHook + {
-        uri: 'http://kourier-webhook.ci.svc.cluster.local:3000/concourse-success',
+        json: kourierNotifyHook.json + {
+          result: 'success'
+        }
       },
     },
   },

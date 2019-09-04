@@ -1,0 +1,7 @@
+bases:
+  - default.yml
+
+releases:
+  - name: kourier-crd
+    namespace: ci
+    chart: kourier/crd

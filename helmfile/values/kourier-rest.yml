@@ -1,0 +1,5 @@
+controllerName: rest
+service:
+  enabled: true
+image:
+  repository: kourier/rest-controller

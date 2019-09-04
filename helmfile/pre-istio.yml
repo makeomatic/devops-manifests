@@ -1,8 +1,7 @@
 bases:
-- default.yml
+  - default.yml
 
 releases:
-
-- name: istio-crds
-  namespace: istio-system
-  chart: istio.io/istio-init
+  - name: istio-init
+    namespace: istio-system
+    chart: istio.io/istio-init

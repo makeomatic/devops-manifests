@@ -1,0 +1,41 @@
+fullnameOverride: vault
+
+server:
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+
+  # https://www.vaultproject.io/docs/auth/kubernetes.html
+  authDelegator:
+    enabled: true
+
+  ha:
+    enabled: true
+    replicas: 3
+    config: |
+      ui = true
+      listener "tcp" {
+        tls_disable = 1
+        address = "[::]:8200"
+        cluster_address = "[::]:8201"
+      }
+      storage "consul" {
+        address = "HOST_IP:8500"
+        path = "vault"
+      }
+      seal "gcpckms" {
+
+      }
+  extraEnvironmentVars:
+    GOOGLE_CREDENTIALS: /vault/userconfig/vault-google-account/credentials.json
+    VAULT_GCPCKMS_SEAL_KEY_RING: vault
+    VAULT_GCPCKMS_SEAL_CRYPTO_KEY: vault
+
+  extraVolumes:
+    - type: secret
+      name: vault-google-account
+      load: false
+
+ui:
+  enabled: true
