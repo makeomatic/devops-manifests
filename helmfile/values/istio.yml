@@ -1,11 +1,12 @@
 global:
-
   logging:
     level: "default:info"
 
   proxy:
-  # Expected values are: trace|debug|info|warning|error|critical|off
-    logLevel: warning
+    accessLogEncoding: JSON
+    accessLogFile: "/dev/stdout"
+    # Expected values are: trace|debug|info|warning|error|critical|off
+    logLevel: debug
   # outbound traffic to unknown destinations will be allowed by default
   outboundTrafficPolicy:
     mode: ALLOW_ANY # ALLOW_ANY, REGISTRY_ONLY
@@ -90,6 +91,7 @@ kiali:
     grafanaURL: http://grafana.monitoring:3000
     jaegerURL: http://jaeger-query:16686
 
+# do not use custom CNI for now (Sep 2019 - some bugs in GKE with CALICO)
 istio_cni:
-  enabled: true
+  enabled: false
   cniBinDir: /home/kubernetes/bin

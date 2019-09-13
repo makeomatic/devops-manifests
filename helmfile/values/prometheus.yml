@@ -33,25 +33,97 @@ alertmanager:
         memory: 64Mi
 
   config:
+    templates:
+      - "/etc/alertmanager/config/common.tmpl"
     global:
       resolve_timeout: 5m
+      opsgenie_api_key: "????"
     route:
       group_by: ["alertname"]
       group_wait: 30s
       group_interval: 5m
       repeat_interval: 24h
+      receiver: "opsgenie"
+      routes:
+        - match:
+            alertname: Watchdog
+          receiver: "null"
+    receivers:
+      - name: "null"
+      # https://docs.opsgenie.com/docs/heartbeat-api
+      # avaiable only on paid plans starting from standart
+      # - name: opsgenie-watchdog
+      #   webhook_configs:
+      #   - url: 'https://api.opsgenie.com/v2/heartbeats/HEARTBEAT_NAME/ping'
+      #     send_resolved: true
+      #     group_interval: 1m
+      #     http_config:
+      #       basic_auth:
+      #         password: "???"
+      - name: opsgenie
+        opsgenie_configs:
+          # - api_key: "????"
+          - message: '{{`{{ template "opsgenie.makeomatic.message" . }}`}}'
+            description: '{{`{{ template "opsgenie.makeomatic.description" . }}`}}'
+            priority: '{{`{{ template "opsgenie.makeomatic.priority" . }}`}}'
+            tags: '{{`{{ template "opsgenie.makeomatic.tags" . }}`}}'
+            # source: '{{ template \"opsgenie.default.source\" . }}'
+            # details: { <string>: <tmpl_string>, ... }
+            # note: <tmpl_string>
 
+  tplConfig: true
+  templateFiles:
+    common.tmpl: |-
+
+      {{ define "opsgenie.makeomatic.priority" }}
+        {{- if .CommonLabels.severity -}}
+          {{- if eq .CommonLabels.severity "critical" -}}
+              P1
+          {{- else if eq .CommonLabels.severity "important" -}}
+              P2
+          {{- else if eq .CommonLabels.severity "warning" -}}
+              P3
+          {{- else if eq .CommonLabels.severity "information" -}}
+              P4
+          {{- else if eq .CommonLabels.severity "none" -}}
+              P5
+          {{- else -}}
+              P5
+          {{- end }}
+        {{- else -}}
+          P5
+        {{- end }}
+      {{- end -}}
+
+      {{ define "opsgenie.makeomatic.description" }}
+        {{- $root := . -}}
+        {{ range .Alerts }}
+          *Description:* {{ .Annotations.message }}
+          *Runbook:* {{ .Annotations.runbook_url }}
+          *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`{{ end }}
+
+        {{ end }}
+      {{- end }}
+
+      {{ define "opsgenie.makeomatic.message" }}
+        [{{ .CommonLabels.project }}-{{ .CommonLabels.environment }}] - {{ .GroupLabels.alertname }}@{{ .CommonLabels.product }}, {{ .CommonLabels.severity }}:{{ .Status }}
+      {{- end -}}
+
+      {{ define "opsgenie.makeomatic.tags" }}
+        {{ .CommonLabels.product }}, {{ .CommonLabels.environment }}, {{ .CommonLabels.project }}
+      {{- end -}}
 
 prometheus:
   prometheusSpec:
     ruleSelector:
       matchExpressions:
-      - key: app
-        operator: Exists
+        - key: app
+          operator: Exists
     serviceMonitorSelector:
       matchExpressions:
-      - key: app
-        operator: Exists
+        - key: app
+          operator: Exists
     resources:
       requests:
         cpu: 10m
