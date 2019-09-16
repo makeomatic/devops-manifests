@@ -39,12 +39,23 @@ alertmanager:
       resolve_timeout: 5m
       opsgenie_api_key: "????"
     route:
+      ### default values
       group_by: ["alertname"]
+      # How long to initially wait to send a notification for a group of alerts
       group_wait: 30s
+      # How long to wait before sending a notification about new alerts that are added to a group
       group_interval: 5m
+      # How long to wait before sending a notification again if it has already been sent successfully for an alert
       repeat_interval: 24h
       receiver: "opsgenie"
+      ### additional routes
       routes:
+        # test of missed metrics
+        - match:
+            group: absence-test
+          group_by: ["group"]
+          receiver: "opsgenie"
+        # rule always firing so system is working
         - match:
             alertname: Watchdog
           receiver: "null"
