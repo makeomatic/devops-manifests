@@ -11,10 +11,10 @@ if [ -z "$project" ] || [ -z "$environment" ]; then
 fi
 
 tmp_dir=$(mktemp -d -t prom)
-jsonnet manifests/prometheus.jsonnet > $tmp_dir/manifests.json
+jsonnet manifests/prometheus.jsonnet > "$tmp_dir"/manifests.json
 
-node $basedir/parse-alertmanager.js $tmp_dir/manifests.json group=absence-test environment=$environment component=monitoring severity=none project=$project > $tmp_dir/absence.json
+node "$basedir"/parse-alertmanager.js "$tmp_dir"/manifests.json group=absence-test environment="$environment" component=monitoring severity=none project="$project" > "$tmp_dir"/absence.json
 
-kubectl apply -f $tmp_dir/manifests.json
-kubectl apply -f $tmp_dir/absence.json
-rm -R $tmp_dir
+kubectl apply -f "$tmp_dir"/manifests.json
+kubectl apply -f "$tmp_dir"/absence.json
+rm -R "$tmp_dir"

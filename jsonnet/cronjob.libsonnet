@@ -13,7 +13,7 @@
   kind: 'CronJob',
   metadata: {
     name: $.name,
-    namespace: $.namespace
+    namespace: $.namespace,
   },
   spec: {
     successfulJobsHistoryLimit: 0,
@@ -23,8 +23,8 @@
     jobTemplate: {
       metadata: {
         labels: {
-          cronjob: $.name
-        }
+          cronjob: $.name,
+        },
       },
       spec: {
         activeDeadlineSeconds: 60,
@@ -32,19 +32,19 @@
         template: {
           metadata: {
             annotations: {
-              'sidecar.istio.io/inject': 'false'
-            }
+              'sidecar.istio.io/inject': 'false',
+            },
           },
           spec: {
             restartPolicy: 'Never',
             containers: [{
               args: $.args,
               image: $.image,
-              name: 'test'
+              name: 'test',
             }],
           },
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 }

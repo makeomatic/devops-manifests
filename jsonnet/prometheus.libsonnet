@@ -33,20 +33,33 @@ template {
   labels:: error 'specify additional labels for every alerting rule',
   rules:: error 'specify set of rules',
   namespace:: 'monitoring',
+  skipAlerts:: {
+    // valid behaviour instead: fail on long jobs ("KubeJobFailed" will trigger on fail)
+    KubeJobCompletion: true,
+  },
 
   local this = self,
 
-  // customize predefined rules adding own labels etc
-  local mapRules(name, rules) = std.map(function(rule) rule
-  + ( if std.objectHas(rule, 'labels') then {
-    labels: rule.labels + this.labels + {
-      component: name
-    },
-  } else {} ), rules),
+  // customize predefined rules adding own labels
+  local labelRules(name, rules) =
+    std.map(
+      function(rule)
+        rule
+        + (if std.objectHas(rule, 'labels') then {
+             labels: rule.labels + this.labels + {
+               component: name,
+             },
+           } else {}), rules
+    ),
+
+  // remove rules from blacklist
+  local filterRule(rule) = std.objectHas(rule, 'alert') && !std.objectHas(this.skipAlerts, rule.alert),
 
   local groupMapper(group) = {
+    local labeled = labelRules(group.name, group.rules),
+    local skipped = std.filter(filterRule, labeled),
     name: group.name,
-    rules: mapRules(group.name, group.rules)
+    rules: skipped,
   },
 
   local loadCustomizedRules(items) = std.map(groupMapper, items),
@@ -62,7 +75,7 @@ template {
       name: item.name,
       namespace: this.namespace,
       labels: {
-        app: item.name
+        app: item.name,
       },
     },
     spec: {

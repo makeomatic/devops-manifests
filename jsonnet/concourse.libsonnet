@@ -1,9 +1,9 @@
-###
-# Following template generates concource CI pipeline which do the following:
-# - watches for microfleet release
-# - update corresponding helm release
-# - notify into telegram channel
-###
+//##
+// Following template generates concource CI pipeline which do the following:
+// - watches for microfleet release
+// - update corresponding helm release
+// - notify into telegram channel
+//##
 
 {
   name:: error 'should specify helm deployment name',
@@ -12,7 +12,7 @@
   gcpApiKey:: error 'should specify gcloud API key',
   gcpZone:: error 'should specify gcloud zone',
   gcpProject:: error 'should specify gcloud project',
-  gcpClusterName::  error 'should specify gcloud cluster name',
+  gcpClusterName:: error 'should specify gcloud cluster name',
 
   local this = self,
   local releaseOutputName = 'release',
@@ -25,7 +25,7 @@
     },
     json: {
       link: '{ATC_EXTERNAL_URL}/teams/{BUILD_TEAM_NAME}/pipelines/{BUILD_PIPELINE_NAME}',
-      job: '{BUILD_JOB_NAME}'
+      job: '{BUILD_JOB_NAME}',
     },
   },
 
@@ -60,19 +60,19 @@
     notifyBuildFailure: {
       name: 'build-failure',
       type: 'webhook',
-      source: kourierNotifyHook + {
-        json: kourierNotifyHook.json + {
-          result: 'failure'
-        }
+      source: kourierNotifyHook {
+        json: kourierNotifyHook.json {
+          result: 'failure',
+        },
       },
     },
     notifyBuildSuccess: {
       name: 'build-success',
       type: 'webhook',
-      source: kourierNotifyHook + {
-        json: kourierNotifyHook.json + {
-          result: 'success'
-        }
+      source: kourierNotifyHook {
+        json: kourierNotifyHook.json {
+          result: 'success',
+        },
       },
     },
   },
@@ -82,7 +82,7 @@
       get: resourceItems.notifyNewRelease.name,
       trigger: true,
       params: {
-        include_source_zip: true
+        include_source_zip: true,
       },
     },
     extractNodeVersion: {
@@ -94,15 +94,9 @@
         image_resource: resourceTypes.helm,
         run: {
           path: '/bin/sh',
-          args: ['-c', '
-            mkdir /tmp/source
-            unzip ./'+resourceItems.notifyNewRelease.name+'/source.zip -d /tmp/source
-            mv /tmp/source/*/.mdeprc .
-            echo `jq .node ./.mdeprc -r` > ./'+releaseOutputName+'/node
-            cp ./'+resourceItems.notifyNewRelease.name+'/version ./'+releaseOutputName+'/version
-          '],
+          args: ['-c', '\n            mkdir /tmp/source\n            unzip ./' + resourceItems.notifyNewRelease.name + '/source.zip -d /tmp/source\n            mv /tmp/source/*/.mdeprc .\n            echo `jq .node ./.mdeprc -r` > ./' + releaseOutputName + '/node\n            cp ./' + resourceItems.notifyNewRelease.name + '/version ./' + releaseOutputName + '/version\n          '],
         },
-      }
+      },
     },
     deployImage: {
       task: 'deploy-image',
@@ -112,16 +106,7 @@
         image_resource: resourceTypes.helm,
         run: {
           path: '/bin/bash',
-          args: ['-c', '
-            echo $CLOUDSDK_API_KEY | base64 -d > ./gcloud-api-key.json
-            gcloud auth activate-service-account --key-file gcloud-api-key.json
-            gcloud container clusters get-credentials $KUBERNETES_CLUSTER
-            helm init --client-only
-            helm repo add makeomatic https://cdn.matic.ninja/helm-charts
-            helm repo update
-            echo "helm upgrade $DEPLOYMENT_NAME makeomatic/installer --atomic --recreate-pods --reuse-values --set image.tag=`cat ./'+releaseOutputName+'/node`-`cat ./'+releaseOutputName+'/version`"
-            helm upgrade $DEPLOYMENT_NAME makeomatic/installer --atomic --recreate-pods --reuse-values --set image.tag=`cat ./'+releaseOutputName+'/node`-`cat ./'+releaseOutputName+'/version`
-          '],
+          args: ['-c', '\n            echo $CLOUDSDK_API_KEY | base64 -d > ./gcloud-api-key.json\n            gcloud auth activate-service-account --key-file gcloud-api-key.json\n            gcloud container clusters get-credentials $KUBERNETES_CLUSTER\n            helm init --client-only\n            helm repo add makeomatic https://cdn.matic.ninja/helm-charts\n            helm repo update\n            echo "helm upgrade $DEPLOYMENT_NAME makeomatic/installer --atomic --recreate-pods --reuse-values --set image.tag=`cat ./' + releaseOutputName + '/node`-`cat ./' + releaseOutputName + '/version`"\n            helm upgrade $DEPLOYMENT_NAME makeomatic/installer --atomic --recreate-pods --reuse-values --set image.tag=`cat ./' + releaseOutputName + '/node`-`cat ./' + releaseOutputName + '/version`\n          '],
         },
       },
       params: {
@@ -129,13 +114,13 @@
         CLOUDSDK_API_KEY: this.gcpApiKey,
         CLOUDSDK_COMPUTE_ZONE: this.gcpZone,
         CLOUDSDK_CORE_PROJECT: this.gcpProject,
-        KUBERNETES_CLUSTER: this.gcpClusterName
-      }
-    }
+        KUBERNETES_CLUSTER: this.gcpClusterName,
+      },
+    },
   },
 
   // PIPELINE ITSELF
-  resource_types: [ resourceTypes.webhook ],
+  resource_types: [resourceTypes.webhook],
   resources: [
     resourceItems.notifyBuildSuccess,
     resourceItems.notifyBuildFailure,
@@ -145,10 +130,10 @@
     name: 'upgrade-' + this.name,
     serial: true,
     on_failure: {
-      put: resourceItems.notifyBuildFailure.name
+      put: resourceItems.notifyBuildFailure.name,
     },
     on_success: {
-      put: resourceItems.notifyBuildSuccess.name
+      put: resourceItems.notifyBuildSuccess.name,
     },
     plan: [
       tasks.waitForRelease,

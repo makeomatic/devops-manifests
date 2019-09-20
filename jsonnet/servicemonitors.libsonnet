@@ -9,7 +9,7 @@ local mapper(item) = {
     name: item.name,
     namespace: 'monitoring',
     labels: {
-      app: item.name
+      app: item.name,
     },
   },
   spec: {
@@ -17,7 +17,7 @@ local mapper(item) = {
       matchLabels: item.labels,
     },
     namespaceSelector: {
-      matchNames: [ item.namespace ],
+      matchNames: [item.namespace],
     },
     endpoints: [
       {
