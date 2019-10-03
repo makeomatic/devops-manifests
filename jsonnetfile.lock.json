@@ -8,7 +8,7 @@
                     "subdir": ""
                 }
             },
-            "version": "6a0450b32a0f3b25299dcca7f40157e21c50d023"
+            "version": "acac6762be477a7ec16a96ae5222dd365568d87d"
         },
         {
             "name": "grafonnet",
@@ -28,7 +28,7 @@
                     "subdir": "grafana-builder"
                 }
             },
-            "version": "918277932b7e058481e4f227ca4f0e5237d1c2db"
+            "version": "2b9b14d0d91adf8781e5b2c9b62dc8cb180a9886"
         }
     ]
 }
