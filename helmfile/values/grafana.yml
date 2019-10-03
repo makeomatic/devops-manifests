@@ -12,54 +12,56 @@ datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
-    - name: prometheus
-      type: prometheus
-      url: http://prometheus-prometheus.monitoring:9090
-      isDefault: true
-      access: proxy
-      editable: false
-    - name: prometheus-istio
-      type: prometheus
-      url: http://prometheus.istio-system:9090
-      access: proxy
-      jsonData:
-        timeInterval: 5s
-      editable: false
-    - name: loki
-      type: loki
-      url: http://loki:3100
-      access: proxy
-      editable: false
+      - name: prometheus
+        type: prometheus
+        url: http://prometheus-prometheus.monitoring:9090
+        isDefault: true
+        access: proxy
+        editable: false
+      - name: prometheus-istio
+        type: prometheus
+        url: http://prometheus.istio-system:9090
+        access: proxy
+        jsonData:
+          timeInterval: 5s
+        editable: false
+      - name: loki
+        type: loki
+        url: http://loki:3100
+        access: proxy
+        editable: false
 
 dashboardProviders:
   dashboardproviders.yaml:
     apiVersion: 1
     providers:
-    - name: istio
-      folder: kubernetes
-      type: file
-      disableDeletion: true
-      editable: false
-      updateIntervalSeconds: 10
-      options:
-        path: /var/lib/grafana/dashboards/istio
-    - name: microfleet
-      folder: microfleet
-      type: file
-      disableDeletion: true
-      editable: false
-      updateIntervalSeconds: 10
-      options:
-        path: /var/lib/grafana/dashboards/microfleet
-    - name: grafana
-      folder: grafana
-      type: file
-      disableDeletion: true
-      editable: false
-      updateIntervalSeconds: 10
-      options:
-        path: /var/lib/grafana/dashboards/grafana
-
+      - name: istio
+        folder: istio
+        folderUid: istio
+        type: file
+        disableDeletion: true
+        editable: false
+        updateIntervalSeconds: 10
+        options:
+          path: /var/lib/grafana/dashboards/istio
+      - name: microfleet
+        folder: microfleet
+        folderUid: microfleet
+        type: file
+        disableDeletion: true
+        editable: false
+        updateIntervalSeconds: 10
+        options:
+          path: /var/lib/grafana/dashboards/microfleet
+      - name: kubernetes
+        folder: kubernetes
+        folderUid: kubernetes
+        type: file
+        disableDeletion: true
+        editable: false
+        updateIntervalSeconds: 10
+        options:
+          path: /var/lib/grafana/dashboards/kubernetes
 
 dashboards:
   microfleet:
@@ -69,7 +71,7 @@ dashboards:
     kube-eagle:
       url: https://grafana.com/api/dashboards/9871/revisions/2/download
       datasource: prometheus
-  grafana:
+  kubernetes:
     apiserver:
       url: https://raw.githubusercontent.com/makeomatic/devops-manifests/master/dashboards/apiserver.json
       datasource: prometheus
