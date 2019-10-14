@@ -10,12 +10,11 @@ replicationSecret:
   usernameKey: pg_repl_username
   passwordKey: pg_repl_password
 
-
 clusterSpec:
   automaticPgRestart: true
 
 pgParameters:
-  max_connections: "500"
+  max_connections: "501"
 
   checkpoint_completion_target: "0.9"
   shared_preload_libraries: "pg_stat_statements"
@@ -28,7 +27,6 @@ pgParameters:
   # logging_collector: "on"
   # log_min_duration_statement: "0"
   # log_lock_waits: "yes"
-
 
 # manages postgresql instances
 keeper:

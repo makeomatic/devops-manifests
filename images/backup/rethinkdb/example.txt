@@ -1,0 +1,6 @@
+docker run \
+	-e RETHINKDB_HOST=rethinkdb-rethinkdb-proxy.default.svc.cluster.local \
+	-e RETHINKDB_DB=tinode \
+	-e RETHINKDB_PASSWORD="Cook7)Add)))" \
+	-e BACKUP_PATH=/backup.tar.gz \
+	gcr.io/peak-orbit-214114/backup/rethinkdb:debug

@@ -1,0 +1,45 @@
+apiVersion: skaffold/v1beta7
+kind: Config
+build: {}
+deploy: {}
+profiles:
+  - name: store
+    build:
+      artifacts:
+        - image: makeomatic/cloud-backup
+          context: store
+      tagPolicy:
+        envTemplate:
+          template: "{{.IMAGE_NAME}}:store"
+  - name: consul
+    build:
+      artifacts:
+        - image: makeomatic/cloud-backup
+          context: consul
+      tagPolicy:
+        envTemplate:
+          template: "{{.IMAGE_NAME}}:consul"
+  - name: postgres
+    build:
+      artifacts:
+        - image: makeomatic/cloud-backup
+          context: postgres
+      tagPolicy:
+        envTemplate:
+          template: "{{.IMAGE_NAME}}:postgres"
+  - name: redis
+    build:
+      artifacts:
+        - image: makeomatic/cloud-backup
+          context: redis
+      tagPolicy:
+        envTemplate:
+          template: "{{.IMAGE_NAME}}:redis"
+  - name: rethinkdb
+    build:
+      artifacts:
+        - image: makeomatic/cloud-backup
+          context: rethinkdb
+      tagPolicy:
+        envTemplate:
+          template: "{{.IMAGE_NAME}}:rethinkdb"
