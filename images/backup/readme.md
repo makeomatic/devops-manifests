@@ -65,5 +65,30 @@ echo "$RETHINKDB_PASSWORD" > ./password
 rethinkdb-restore /dump/tinode_12-database.tar -c $RETHINKDB_HOST --password-file ./password --force -i tinode
 ```
 
-## Kubernetes cronjob example
-Following job dumps redis data on daily basis and stores its to google bucket.
+## Example of creating automatic redis sentinel service backup
+```
+# create secret with google cloud service account to access bucket
+kubectl create secret generic backup-staging-credentials \
+  --from-literal=bucket_name=k8s-backups-staging \
+  --from-file=./credentials.json
+
+# job name
+export NAME="analytics"
+# job type / docker image tag
+export TYPE="redis"
+# run job every day
+export SCHEDULE="@daily"
+# secret name where google cloud crenentials are situated (required to access bucket)
+export SECRET_NAME="backup-staging-credentials"
+# redis sentinel location
+export REDIS_HOST="analytics.services.svc.cluster.local"
+export REDIS_GROUP="master"
+
+# apply template with filled value creating cronjob
+cat redis-job-template.yml | envsubst | kubectl apply -n services -f -
+```
+
+```
+# run cronjob manually
+kubectl -n services create job --from=cronjob/backup-redis-analytics manual-backup
+```

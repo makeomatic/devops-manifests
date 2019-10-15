@@ -3,10 +3,9 @@ kind: CronJob
 metadata:
   labels:
     app: backup
-    type: {type}
-    name: {name}
-    namespace: default
-  name: backup-redis-{name}
+    type: $TYPE
+    name: $NAME
+  name: backup-$TYPE-$NAME
 spec:
   concurrencyPolicy: Forbid
   failedJobsHistoryLimit: 1
@@ -14,8 +13,8 @@ spec:
     metadata:
       labels:
         app: backup
-        type: redis
-        name: {name}
+        type: $TYPE
+        name: $NAME
     spec:
       activeDeadlineSeconds: 600
       backoffLimit: 1
@@ -27,17 +26,17 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       key: private_key
-                      name: backup-bucket-credentials
+                      name: $SECRET_NAME
                 - name: BUCKET_NAME
                   valueFrom:
                     secretKeyRef:
                       key: bucket_name
-                      name: backup-bucket-credentials
+                      name: $SECRET_NAME
                 - name: BACKUP_PATH
                   value: /backup/dump.tar.gz
                 - name: BUCKET_PATH
-                  value: redis/{name}
-              image: gcr.io/peak-orbit-214114/backup/bucket-store:debug
+                  value: "$TYPE/$NAME"
+              image: makeomatic/cloud-backup:store
               imagePullPolicy: IfNotPresent
               name: store
               volumeMounts:
@@ -47,12 +46,12 @@ spec:
           initContainers:
             - env:
                 - name: REDIS_HOST
-                  value: { host }
+                  value: $REDIS_HOST
                 - name: REDIS_GROUP
-                  value: master
+                  value: $REDIS_GROUP
                 - name: BACKUP_PATH
                   value: /backup/dump.tar.gz
-              image: gcr.io/peak-orbit-214114/backup/redis:debug.3
+              image: makeomatic/cloud-backup:$TYPE
               imagePullPolicy: IfNotPresent
               name: backup
               volumeMounts:
@@ -62,5 +61,5 @@ spec:
           volumes:
             - emptyDir: {}
               name: backup-volume
-  schedule: "{schedule}"
+  schedule: "$SCHEDULE"
   successfulJobsHistoryLimit: 0
