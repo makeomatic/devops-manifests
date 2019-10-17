@@ -1,7 +1,5 @@
-apiVersion: skaffold/v1beta7
+apiVersion: skaffold/v1beta16
 kind: Config
-build: {}
-deploy: {}
 profiles:
   - name: store
     build:

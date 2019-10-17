@@ -1,0 +1,5 @@
+apiVersion: skaffold/v1beta16
+kind: Config
+build:
+  artifacts:
+    - image: makeomatic/k8s-ci

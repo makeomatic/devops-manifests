@@ -1,10 +1,37 @@
 fullnameOverride: karma
 
 env:
-- name: ALERTMANAGER_URI
-  value: http://prometheus-alertmanager:9093
+  - name: ALERTMANAGER_URI
+    value: http://prometheus-alertmanager:9093
+
+configMap:
+  enabled: true
+  rawConfig:
+    alertmanager:
+      servers:
+        - name: sl-staging
+          uri: http://prometheus-alertmanager:9093
+          timeout: 10s
+          #external_uri: < owerride base URI, silence results
+    labels:
+      keep: ["severity", "namespace"]
+      color:
+        custom:
+          severity:
+            - value: info
+              color: "#87c4e0"
+            - value: warning
+              color: "#ffae42"
+            - value: critical
+              color: "#ff220c"
+            - value_re: ".*"
+              color: "#736598"
+    receivers:
+      strip: ["null"]
 
 resources:
   requests:
     cpu: 100m
+    memory: 128Mi
+  limits:
     memory: 128Mi
