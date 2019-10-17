@@ -47,6 +47,9 @@ gateways:
     replicaCount: 1
     sds:
       enabled: true
+    # https://github.com/istio/istio/issues/7679
+    # enable local and set ingress as daemonset -> should work
+    # externalTrafficPolicy: Local
 
 # do not reject requests if mixer is overloaded
 # enable stdio debugger for staging environment
