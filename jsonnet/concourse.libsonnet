@@ -104,7 +104,7 @@
               'mv /tmp/source/*/.mdeprc .',
               'echo `jq .node ./.mdeprc -r` > $DIR/node',
               'cp ./' + resourceItems.notifyNewRelease.name + '/version $DIR/version',
-              'echo `$DIR/node`-`$DIR/version` > $DIR/tag',
+              'echo `cat $DIR/node`-`cat $DIR/version` > $DIR/tag',
               // move skaffold-specific settings if exist
               'mv /tmp/source/*/skaffold.yml $DIR',
               'mv /tmp/source/*/deploy $DIR',
