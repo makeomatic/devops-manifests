@@ -9,7 +9,7 @@ loki:
 
   persistence:
     enabled: true
-    size: 30Gi
+    size: 100Gi
 
 promtail:
   resources:

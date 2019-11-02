@@ -16,6 +16,8 @@ repositories:
     url: https://storage.googleapis.com/istio-release/releases/1.2.6/charts/
   - name: kourier
     url: https://kourier-io.github.io/helm-chart
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
 helmDefaults:
   wait: true
   recreatePods: false
