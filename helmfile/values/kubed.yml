@@ -1,0 +1,7 @@
+apiserver:
+  enabled: false
+
+enableAnalytics: false
+
+config:
+  clusterName: cluster

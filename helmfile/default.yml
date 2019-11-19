@@ -18,6 +18,8 @@ repositories:
     url: https://kourier-io.github.io/helm-chart
   - name: bitnami
     url: https://charts.bitnami.com/bitnami
+  - name: appscode
+    url: https://charts.appscode.com/stable
 helmDefaults:
   wait: true
   recreatePods: false
